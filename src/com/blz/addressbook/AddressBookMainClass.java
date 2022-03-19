@@ -9,6 +9,7 @@ import java.util.Map.Entry;
 import java.util.stream.Collectors;
 import java.util.Optional;
 import java.util.Scanner;
+import java.util.Comparator;
 
 public class AddressBookMainClass {
 	private static Scanner sc = new Scanner(System.in);
@@ -28,7 +29,8 @@ public class AddressBookMainClass {
 
 		System.out.println("Enter your choice");
 		System.out.println(
-				"1 : Add new contact    2 : Edit contact  3 : Delete contact  4: Add Multiple Contacts 5: Display Contacts 6: Search Person 7: Person with City and State 8: Count person by city and state");
+				"1 : Add new contact    2 : Edit contact  3 : Delete contact  4: Add Multiple Contacts 5: Display Contacts 6: Search Person 7: Person with City and State"
+						+ " 8: Count person by city and state 9: Sorted Person's by alphabetically in Address Book");
 		int choice = sc.nextInt();
 		switch (choice) {
 		case 1:
@@ -136,6 +138,10 @@ public class AddressBookMainClass {
 			break;
 		case 8:
 			addressbooks.numberOfContactsCountByCityAndState();
+			addressbooks.addContacts();
+			break;
+		case 9:
+			addressbooks.sortEntriesInAddressBookByName();
 			addressbooks.addContacts();
 			break;
 		default:
@@ -351,4 +357,17 @@ public class AddressBookMainClass {
 
 	}
 
+	public void sortEntriesInAddressBookByName() {
+		List<Contact> contactsList = new ArrayList<>();
+		for (Map.Entry<String, AddressBook> set : addressBookSystem.entrySet()) {
+			AddressBook addressBook = set.getValue();
+			contactsList = addressBook.getContacts();
+			System.out.println("Sorted Person's by alphabetically in Address Book");
+			List<Contact> sortedList = contactsList.stream().sorted(Comparator.comparing(Contact::getFirstName))
+					.collect(Collectors.toList());
+
+			sortedList.forEach(con -> System.out.println(con.getFirstName()));
+		}
+
+	}
 }
